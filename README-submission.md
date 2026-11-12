@@ -4,7 +4,7 @@
 | Last Name | First Name | GitHub User Name |
 |-----------|------------|------------------|
 | TBD       | TBD        | TBD              |
-| TBD       | TBD        | TBD              |
+| Jizan     | Arshia     | ArshiaJizan      |
 | TBD       | TBD        | TBD              |
 
 # Test Results
