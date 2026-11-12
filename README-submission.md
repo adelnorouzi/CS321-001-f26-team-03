@@ -3,7 +3,7 @@
 
 | Last Name | First Name | GitHub User Name |
 |-----------|------------|------------------|
-| TBD       | TBD        | TBD              |
+| Norouzi   | Adel       | adelnorouzi      |
 | Jizan     | Arshia     | ArshiaJizan      |
 | TBD       | TBD        | TBD              |
 
