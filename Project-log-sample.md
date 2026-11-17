@@ -1,22 +1,19 @@
 ### Project Log
 ## Team 3
 
-`(studentA)`
+`(Adel Norouzi)`
 `(studentC)`
 `(studentB)`
 
 
 # Sprint 1 (November 3rd, Wednesday 2023 - November 19th, Friday 2023)
-1. Closes #9 commit adbc94690fa5ecf2912a055f634a6e24b4da8fbe `(studentA)`
+1. Closes #4 commit f4e19a3 `(Adel Norouzi)`
+
 2. Closes #7 commit 151669a9d40ec1ebd34dc3cb3649d564113cbcbf `(studentA)`
 3. Closes #3 commit 0b76cc6ba2487e2190a4072359c3d88bd104b226 `(studentB)`
 4. Closes #10 commit 515746a2378c782496af8b1cee9bc6036b176603 `(studentB)`
 5. Closes #12 commit 3240ac0db317f13288d06453ecd13e571a578fa5 `(studentA)`
-6. Closes #14 commit 62048ee405ce893428f723a21a599ad9ba6bef93 `(studentB)`
-7. Closes #8 commit 3c94cdbf15eb4abccf951910163b574b77883bf8 `(studentC)`
-8. Create Project-log.md (this file!) commit 7ae23e9e2a9857a2f99e5091e137c8c440db9f8a `(studentA)`
-9. Closes #2 commit 983a9a8f23b04adf89fa3d33367e6aeafdc8e321 `(studentC)`
-10. Closes #7 commit cb11f4a0a31b7781fee522b1b2e4677601cf75f7 `(studentA)`
+
 # Sprint 2 (November 21st, Sunday 2023 - November 27th, Saturday 2023)
 11. Closes #3 commit b27bd21c3a7e1bf95297ffc12dd8f257f37616a9 `(studentB)`
 12. Closes #10 commit b2ad17d9633bd6f9613a3ac62545ae97e4909797 `(studentB)`
