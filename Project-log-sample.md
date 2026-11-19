@@ -6,9 +6,8 @@
 `(Arshia Jizan)`
 
 
-# Sprint 1 (November 3rd, Wednesday 2023 - November 19th, Friday 2023)
+# Sprint 1 (November 12th, Thursday 2026 - November 20th, Friday 2026)
 1. Closes #4 commit f4e19a3 `(Adel Norouzi)`
-
 2. Closes #5 commit 4a71d86 & d5ceed4 `(Halil Marmara)`
 3. Closes #6 commit f249bcb `(Arshia Jizan)`
 
