@@ -10,10 +10,8 @@
 1. Closes #4 commit f4e19a3 `(Adel Norouzi)`
 
 2. Closes #5 commit 4a71d86 & d5ceed4 `(Halil Marmara)`
-
 3. Closes #6 commit f249bcb `(Arshia Jizan)`
-4. Closes #10 commit 515746a2378c782496af8b1cee9bc6036b176603 `(studentB)`
-5. Closes #12 commit 3240ac0db317f13288d06453ecd13e571a578fa5 `(studentA)`
+
 
 # Sprint 2 (November 21st, Sunday 2023 - November 27th, Saturday 2023)
 11. Closes #3 commit b27bd21c3a7e1bf95297ffc12dd8f257f37616a9 `(studentB)`
