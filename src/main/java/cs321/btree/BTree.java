@@ -267,7 +267,7 @@ public class BTree implements BTreeInterface {
 
         for (int j = 0; j < x.numKeys; j++) {
             if (x.keys[j].getKey().compareTo(key) == 0) {
-                x.keys[j].incrementCount();
+                x.keys[j].incCount();
                 diskWrite(x);
                 return;
             }
@@ -296,7 +296,7 @@ public class BTree implements BTreeInterface {
 
                 int cmp = key.compareTo(x.keys[i].getKey());
                 if (cmp == 0) {
-                    x.keys[i].incrementCount();
+                    x.keys[i].incCount();
                     diskWrite(x);
                     return;
                 } else if (cmp > 0) {
