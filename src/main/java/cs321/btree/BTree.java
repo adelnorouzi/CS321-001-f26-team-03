@@ -27,7 +27,7 @@ public class BTree implements BTreeInterface {
     private int height;
     private BTreeNode root;
 
-    /** Represents a single B-Tree node stored on disk. */
+    /* Represents a single B-Tree node stored on disk. */
     private class BTreeNode {
         long offset;
         boolean isLeaf;
@@ -85,7 +85,10 @@ public class BTree implements BTreeInterface {
         numNodes++;
         return new BTreeNode(offset, isLeaf);
     }
-
+    /**
+     * Writes the B-Tree metadata (root offset, degree, size, number of nodes, height) to the beginning of the file.
+     * @throws IOException
+     */
     private void writeMetadata() throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(METADATA_SIZE);
         buffer.putLong(rootOffset);
@@ -194,16 +197,142 @@ public class BTree implements BTreeInterface {
 
 
 
-
+    /**
+     * Inserts a TreeObject into the B-Tree. If the key already exists, increments its count.
+     * @param obj
+     * @throws IOException
+     */
     @Override
     public void insert(TreeObject obj) throws IOException {
-        // TODO: Task #5
+        if (obj == null || obj.getKey() == null) {
+            throw new IllegalArgumentException("TreeObject and its key cannot be null.");
+        }
+
+        TreeObject entry = new TreeObject(truncateKey(obj.getKey()), obj.getCount());
+
+        if (root.numKeys == 2 * degree - 1) {
+            BTreeNode oldRoot = root;
+            BTreeNode newRoot = allocateNode(false);
+            root = newRoot;
+            rootOffset = newRoot.offset;
+            newRoot.children[0] = oldRoot.offset;
+            height++;
+
+            splitChild(newRoot, 0, oldRoot);
+            insertNonFull(newRoot, entry);
+        } else {
+            insertNonFull(root, entry);
+        }
+
+        writeMetadata();
+    }
+    /** Splits full child y at index i of parent x and promotes its median key to x. */
+    private void splitChild(BTreeNode x, int i, BTreeNode y) throws IOException {
+        BTreeNode z = allocateNode(y.isLeaf);
+        z.numKeys = degree - 1;
+
+        for (int j = 0; j < degree - 1; j++) {
+            z.keys[j] = y.keys[j + degree];
+            y.keys[j + degree] = null;
+        }
+
+        if (!y.isLeaf) {
+            for (int j = 0; j < degree; j++) {
+                z.children[j] = y.children[j + degree];
+                y.children[j + degree] = -1L;
+            }
+        }
+
+        y.numKeys = degree - 1;
+
+        for (int j = x.numKeys; j >= i + 1; j--) {
+            x.children[j + 1] = x.children[j];
+        }
+        x.children[i + 1] = z.offset;
+
+        for (int j = x.numKeys - 1; j >= i; j--) {
+            x.keys[j + 1] = x.keys[j];
+        }
+        x.keys[i] = y.keys[degree - 1];
+        y.keys[degree - 1] = null;
+        x.numKeys++;
+
+        diskWrite(y);
+        diskWrite(z);
+        diskWrite(x);
+    }
+    /** Inserts entry into non-full node x or increments count if the key already exists. */
+    private void insertNonFull(BTreeNode x, TreeObject entry) throws IOException {
+        String key = entry.getKey();
+
+        for (int j = 0; j < x.numKeys; j++) {
+            if (x.keys[j].getKey().compareTo(key) == 0) {
+                x.keys[j].incrementCount();
+                diskWrite(x);
+                return;
+            }
+        }
+
+        int i = x.numKeys - 1;
+
+        if (x.isLeaf) {
+            while (i >= 0 && key.compareTo(x.keys[i].getKey()) < 0) {
+                x.keys[i + 1] = x.keys[i];
+                i--;
+            }
+            x.keys[i + 1] = entry;
+            x.numKeys++;
+            size++;
+            diskWrite(x);
+        } else {
+            while (i >= 0 && key.compareTo(x.keys[i].getKey()) < 0) {
+                i--;
+            }
+            i++;
+
+            BTreeNode child = diskRead(x.children[i]);
+            if (child.numKeys == 2 * degree - 1) {
+                splitChild(x, i, child);
+
+                int cmp = key.compareTo(x.keys[i].getKey());
+                if (cmp == 0) {
+                    x.keys[i].incrementCount();
+                    diskWrite(x);
+                    return;
+                } else if (cmp > 0) {
+                    i++;
+                }
+                child = diskRead(x.children[i]);
+            }
+            insertNonFull(child, entry);
+        }
     }
 
-    /** Returns keys in sorted order for BTreeTest validation. */
+    /**
+     * Returns an array of all keys in the B-Tree in sorted order.
+     * @return
+     * @throws IOException
+     */
     public String[] getSortedKeyArray() throws IOException {
-        // TODO: Task #5
-        return new String[0];
+        String[] result = new String[(int) size];
+        if (root != null && size > 0) {
+            inOrderFill(root, result, 0);
+        }
+        return result;
+    }
+
+    /** Fills the result array with keys in sorted (in-order) traversal order. */
+    private int inOrderFill(BTreeNode node, String[] result, int index) throws IOException {
+        for (int i = 0; i < node.numKeys; i++) {
+            if (!node.isLeaf && node.children[i] != -1L) {
+                index = inOrderFill(diskRead(node.children[i]), result, index);
+            }
+            result[index++] = node.keys[i].getKey();
+        }
+        if (!node.isLeaf && node.children[node.numKeys] != -1L) {
+            index = inOrderFill(diskRead(node.children[node.numKeys]), result, index);
+        }
+        return index;
     }
 
 
